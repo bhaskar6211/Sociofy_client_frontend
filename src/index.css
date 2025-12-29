@@ -4,3 +4,7 @@
 *{
   font-family: "Rethink Sans", sans-serif;
 }
+
+.no-scrollbar::-webkit-scrollbar{
+  display: none;
+}
