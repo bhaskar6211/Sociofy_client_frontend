@@ -12,5 +12,13 @@ const listingSlice = createSlice({
         withdrawn: 0,
         available: 0
     }
+  },
+  reducers: {
+    setListings: (state, action) => {
+      state.listings = action.payload
+    }
   }
 })
+export const {setListings} = listingSlice.actions;
+
+export default listingSlice.reducer
