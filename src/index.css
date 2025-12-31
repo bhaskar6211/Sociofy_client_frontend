@@ -8,3 +8,7 @@
 .no-scrollbar::-webkit-scrollbar{
   display: none;
 }
+
+.cl-drawerRoot{
+  z-index: 100;
+}
