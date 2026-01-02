@@ -18,6 +18,33 @@ const FilterSidebar = ({showFilterPhone, setShowFilterPhone, filters, setFilters
     }
   }
 
+  const [expandedSections, setExpandedSections] = useState({
+    platform: true,
+    price: true,
+    followers: true,
+    niche: true,
+    status: true,
+  })
+
+  const toggleSection = (section) => {
+    setExpandedSections((prev) => ({...prev, [section]: !prev[section]}))
+  }
+
+  const onFiltersChange = (newFilters) => {
+    setFilters({...filters, ...newFilters})
+  }
+
+  const platforms = [
+    {value: 'youtube', label: 'YouTube'},
+    {value: 'instagram', label: 'Instagram'},
+    {value: 'tiktok', label: 'TikTok'},
+    {value: 'facebook', label: 'Facebook'},
+    {value: 'twitter', label: 'Twitter'},
+    {value: 'linkedin', label: 'LinkedIn'},
+    {value: 'twitch', label: 'Twitch'},
+    {value: 'discord', label: 'Discord'},
+  ]
+
   return (
     <div className={`${showFilterPhone ? 'max-sm:fixed' : 'max-sm:hidden'} max-sm:insert-0 z-100 max-sm:h-screen max-sm:overflow-scroll bg-white rounded-lg shadow-sm border border-gray-200 h-fit sticky top-24 md:min-w-[300px]`}>
       <div className='p-4 border-b border-gray-200'>
@@ -42,10 +69,31 @@ const FilterSidebar = ({showFilterPhone, setShowFilterPhone, filters, setFilters
         </div>
         {/* Platforms Filter */}
         <div>
-          <button className='flex items-center justify-between w-full mb-3'>
+          <button onClick={() => toggleSection('platform')} className='flex items-center justify-between w-full mb-3'>
             <label>Platform</label>
-            <ChevronDown className='size-4'/>
+            <ChevronDown className={`size-4 transition-transform ${expandedSections.platform ? 'rotate-180' : ''}`}/>
           </button>
+          {expandedSections.platform && (
+            <div className='flex flex-col gap-2'>
+              {platforms.map((platform) => (
+                <label key={platform.value} className='flex items-center gap-2 text-gray-700 text-sm'>
+                  <input type='checkbox'
+                  checked={filters.platform?.includes(platform.value) || false} 
+                  onChange={(e)=>{
+                    const checked = e.target.checked;
+                    const current = filters.platform || [];
+                    const updated = checked ? [...current, platform.value] : current.filter((p) => p !== platform.value);
+                    onFiltersChange({
+                      ...filters,
+                      platform: updated.length > 0 ? updated : null 
+                    })
+                  }} />
+                  
+                  <span>{platform.label}</span>
+                </label>
+              ))}
+            </div>
+          )}
         </div>
       </div>
     </div>
