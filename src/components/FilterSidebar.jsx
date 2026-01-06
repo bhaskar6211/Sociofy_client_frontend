@@ -35,6 +35,20 @@ const FilterSidebar = ({showFilterPhone, setShowFilterPhone, filters, setFilters
     setFilters({...filters, ...newFilters})
   }
 
+  const onClearFilters = () => {
+    if(search){
+      navigate("/marketplace")
+    }
+    setFilters({
+      platforms: null,
+      maxPrice: 100000,
+      minFollowers: 0,
+      niche: null,
+      verified: false,
+      monetized: false,
+    })
+  }
+
   const platforms = [
     {value: 'youtube', label: 'YouTube'},
     {value: 'instagram', label: 'Instagram'},
@@ -44,6 +58,25 @@ const FilterSidebar = ({showFilterPhone, setShowFilterPhone, filters, setFilters
     {value: 'linkedin', label: 'LinkedIn'},
     {value: 'twitch', label: 'Twitch'},
     {value: 'discord', label: 'Discord'},
+  ]
+
+  const niches = [
+    {value: 'lifestyle', label: 'Lifestyle'},
+    {value: 'fitness', label: 'Fitness'},
+    {value: 'food', label: 'Food'},
+    {value: 'travel', label: 'Travel'},
+    {value: 'tech', label: 'Tech'},
+    {value: 'gaming', label: 'Gaming'},
+    {value: 'fashion', label: 'Fashion'},
+    {value: 'beauty', label: 'Beauty'},
+    {value: 'business', label: 'Business'},
+    {value: 'education', label: 'Education'},
+    {value: 'entertainment', label: 'Entertainment'},
+    {value: 'music', label: 'Music'},
+    {value: 'sports', label: 'Sports'},
+    {value: 'art', label: 'Art'},
+    {value: 'health', label: 'Health'},
+    {value: 'finance', label: 'Finance'},
   ]
 
   return (
@@ -56,7 +89,7 @@ const FilterSidebar = ({showFilterPhone, setShowFilterPhone, filters, setFilters
             </div>
             <div className='flex items-center gap-2'>
 
-                <X className='size-6 text-gray-500 hover:text-gray-700 p-1 hover:bg-gray-100 rounded transition-colors cursor-pointer' />
+                <X onClick={onClearFilters} className='size-6 text-gray-500 hover:text-gray-700 p-1 hover:bg-gray-100 rounded transition-colors cursor-pointer' />
 
                 <button onClick={() => setShowFilterPhone(false)} className='sm:hidden text-sm border text-gray-700 px-3 py-1 rounded'>Apply</button>
             </div>
@@ -134,6 +167,50 @@ const FilterSidebar = ({showFilterPhone, setShowFilterPhone, filters, setFilters
             </select>
           )}
         </div>
+        {/* Niche Filter */}
+        <div>
+          <button onClick={() => toggleSection('niche')} className='flex items-center justify-between w-full mb-3'>
+            <label className='text-sm font-medium text-gray-800'>Niche</label>
+            <ChevronDown className={`size-4 transition-transform ${expandedSections.niche ? 'rotate-180' : ''}`}/>
+          </button>
+          {expandedSections.niche && (
+            <select 
+            value={filters.niche || ''}
+            onChange={(e)=>onFiltersChange({...filters, niche: e.target.value || null})}
+            className='w-full px-3 py-2 border border-gray-300 rounded-lg text-gray-700 outline-indigo-500'>
+              <option value=''>All Niches</option>
+              {niches.map((niche) => (
+                <option key={niche.value} value={niche.value}>
+                  {niche.label}
+                </option>
+              ))}
+
+            </select>
+          )}
+        </div>
+
+        {/* Verification Status */}
+        <div>
+          <button onClick={() => toggleSection('status')} className='flex items-center justify-between w-full mb-3'>
+            <label className='text-sm font-medium text-gray-800'>Account Status</label>
+            <ChevronDown className={`size-4 transition-transform ${expandedSections.status ? 'rotate-180' : ''}`}/>
+          </button>
+          {expandedSections.status && (
+            <div className='space-y-3'>
+              <label className='flex items-center space-x-2 cursor-pointer'>
+                <input type='checkbox' checked={filters.verified || false} 
+                onChange={(e)=>onFiltersChange({...filters, verified: e.target.checked})} />
+                <span className='text-sm text-gray-700'>Verified accounts only</span>
+              </label>
+              <label className='flex items-center space-x-2 cursor-pointer'>
+                <input type='checkbox' checked={filters.monetized || false} 
+                onChange={(e)=>onFiltersChange({...filters, monetized: e.target.checked})} />
+                <span className='text-sm text-gray-700'>Monetized accounts only</span>
+              </label>
+            </div>
+          )}
+        </div>
+
       </div>
     </div>
   )
