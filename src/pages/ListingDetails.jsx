@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 import { getProfileLink, platformIcons } from '../assets/assets';
 import { useSelector } from 'react-redux';
-import { ArrowLeftIcon, ArrowUpRightSquareIcon, Loader2Icon } from 'lucide-react';
+import { ArrowLeftIcon, ArrowUpRightSquareIcon, CheckCircle2, DollarSign, Loader2Icon } from 'lucide-react';
 
 const ListingDetails = () => {
 
@@ -14,6 +14,9 @@ const ListingDetails = () => {
 
   const {listingId} = useParams();
   const {listings} = useSelector((state) => state.listing);
+
+  const [current, setCurrent] = useState(0);
+  const images = listing?.images || [];
 
   useEffect(() => {
     const listing = listings.find((listing) => listing.id === listingId);
@@ -32,20 +35,52 @@ const ListingDetails = () => {
         <div className='flex-1 max-md:w-full'>
           {/* Top Section */}
           <div className='bg-white rounded-xl border border-gray-200 p-6 mb-5'>
-            <div className='flex items-start gap-3'>
-              <div className='p-2 rounded-xl'>{platformIcons[listing.platform]}</div>
-              <div>
+
+            <div className='flex flex-col md:flex-row md:items-end md:justify-between gap-4'>
+
+            
+              <div className='flex items-start gap-3'>
+                <div className='p-2 rounded-xl'>{platformIcons[listing.platform]}</div>
+                <div>
                 <h2 className='flex items-center gap-2 text-xl font-semibold text-gray-800'>{listing.title}
                 <Link target='_blank' to={profileLink}>
                   <ArrowUpRightSquareIcon className='size-4 hover:text-indigo-500'/>
                 </Link>
                 </h2>
-                <p>
+                <p className='text-gray-500 text-sm'>
                   @{listing.username} - {listing.platform?.charAt(0).toUpperCase() + listing.platform?.slice(1)}
                 </p>
+                <div className='flex gap-2 mt-2'>
+                  {listing.verified && (
+                    <span className='flex items-center text-xs bg-indigo-50 text-indigo-600 px-2 py-1 rounded-md'>
+                      <CheckCircle2 className='w-3 h-3 mr-1'/>
+                      Verified
+                    </span>
+                  )}
+                  {listing.monetized && (
+                    <span className='flex items-center text-xs bg-green-50 text-green-600 px-2 py-1 rounded-md'>
+                      <DollarSign className='w-3 h-3 mr-1'/>
+                      Monetized
+                    </span>
+                  )}
+                </div>
+                </div>
               </div>
+
+              <div className='text-right'>
+                <h3 className='text-2xl font-bold text-gray-800'>
+                  {currency}
+                  {listing.price?.toLocaleString()}
+                </h3>
+                <p className='text-sm text-gray-500'>USD</p>
+              </div>
+
             </div>
+
           </div>
+
+          {/* Screenshot Section*/}
+          {}
         </div>
         {/* Seller Info and Purchase Options */}
         <div></div>
