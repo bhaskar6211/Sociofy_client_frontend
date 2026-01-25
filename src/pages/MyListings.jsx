@@ -1,7 +1,8 @@
-import { Plus } from 'lucide-react';
+import { ArrowDownCircleIcon, CheckCircle, CoinsIcon, DollarSign, Eye, Plus, TrendingUp, WalletIcon } from 'lucide-react';
 import React from 'react'
 import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom';
+import StatCard from '../components/StatCard';
 
 const MyListings = () => {
   const {userListings, balance }= useSelector((state)=>state.listing)
@@ -27,7 +28,28 @@ const MyListings = () => {
       </div>
       {/* Stats */}
       <div className='grid grid-cols-1 md:grid-cols-4 gap-6 mb-8'>
+        <StatCard title='Total Listings' value={userListings.length} icon={<Eye className='size-6 text-indigo-600' />} color='indigo' />
 
+        <StatCard title='Active Listings' value={activeListings} icon={<CheckCircle className='size-6 text-green-600' />} color='green' />
+
+        <StatCard title='Sold' value={soldListings} icon={<TrendingUp className='size-6 text-indigo-600' />} color='indigo' />
+
+        <StatCard title='Total Value' value={`${currency}${totalValues.toLocaleString()}`} icon={<DollarSign className='size-6 text-yellow-600'  />} color='yellow' />
+
+      </div>
+      {/* Balance Section */}
+      <div className='flex flex-col sm:flex-row justify-between gap-4 xl:gap-20 p-6 mb-10 bg-white rounded-xl border border-gray-200'>
+        {[
+          {label: 'Earned', value: balance.earned, icon: WalletIcon},
+          {label: 'Withdrawn', value: balance.withdrawn, icon: ArrowDownCircleIcon},
+          {label: 'Available', value: balance.available, icon: CoinsIcon},
+        ].map((item, index)=>(
+          <div key={index} className='flex flex-1 items-center justify-between p-4 rounded-lg border border-gray-100 cursor-pointer'>
+            <div className='flex items-center gap-3'>
+
+            </div>
+          </div>
+        ))}
       </div>
     </div>
   )

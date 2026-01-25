@@ -1,9 +1,16 @@
 import React from 'react'
 
 const StatCard = ({ title, value, icon, color }) => {
+  const colorMap = {indigo: 'bg-indigo-100', green: 'bg-green-100', yellow: 'bg-yellow-100'}
   return (
-    <div>
-      
+    <div className='bg-white rounded-1g border border-gray-200 p-6'>
+      <div className='flex items-center justify-between'>
+        <div>
+          <p className='text-sm font-medium text-gray-600'>{title}</p>
+          <p className='text-2xl font-bold text-gray-800'>{value}</p>
+        </div>
+        <div>{icon}</div>
+      </div>
     </div>
   )
 }
