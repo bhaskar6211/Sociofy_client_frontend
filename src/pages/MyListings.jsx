@@ -19,7 +19,7 @@ const MyListings = () => {
         <div>
           <h1 className='text-3xl font-bold text-gray-800'>My Listings</h1>
           <p className='text-gray-600 mt-1'>Manage your Social media account listings</p>
-        </div>
+        </div> 
         <button onClick={()=>navigate('/create-listing')} className='bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-2 rounded font-medium flex items-center space-x-2 mt-4 md:mt-0'>
           <Plus className='size-4' />
           <span>Add New Listing</span>

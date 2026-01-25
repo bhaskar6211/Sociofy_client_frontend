@@ -1,6 +1,6 @@
 import React from 'react'
 
-const StatCard = () => {
+const StatCard = ({ title, value, icon, color }) => {
   return (
     <div>
       
