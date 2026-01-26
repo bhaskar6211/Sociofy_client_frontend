@@ -1,4 +1,4 @@
-import { ArrowDownCircleIcon, CheckCircle, CoinsIcon, DollarSign, Eye, Plus, TrendingUp, WalletIcon } from 'lucide-react';
+import { ArrowDownCircleIcon, CheckCircle, CoinsIcon, DollarSign, Eye, LockIcon, Plus, StarIcon, TrendingUp, WalletIcon } from 'lucide-react';
 import React from 'react'
 import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom';
@@ -78,6 +78,47 @@ const MyListings = () => {
               <div className='p-6'>
                 <div className='flex items-start gap-4 justify-between mb-4'>
                   {platformIcons[listing.platform]}
+                  <div className='flex-1'>
+                    <div className='flex justify-between items-start'>
+                      <h3 className='text-lg font-semibold text-gray-800'>{listing.title}</h3>
+                      <div className='flex items-center gap-2'>
+                        <div className='relative group'>
+                          <LockIcon size={14}/>
+                          <div className='invisible group-hover:visible absolute right-0 top-0 pt-4.5 z-10'>
+                            <div className='bg-white text-gray-600 text-xs rounded border border-gray-200 p-2 px-3'>
+                              {!listing.isCredentialSubmitted && (
+                                <>
+                                <button className='flex items-center gap-2 text-nowrap'>Add Credentials</button>
+                                <hr className='border-gray-200 my-2' />
+                                </>
+                              )}
+                              <button className='text-nowrap'>
+                                Status :{" "}
+                                <span className={
+                                  listing.isCredentialSubmitted
+                                    ? listing.isCredentialVerified
+                                      ? listing.isCredentialChanged
+                                      ? "text-green-600" : "text-indigo-600" : "text-slate-600" : "text-red-600"
+                                }>
+                                  {listing.isCredentialSubmitted
+                                  ? listing.isCredentialVerified
+                                ? listing.isCredentialChanged
+                              ? "Changed" : "Verified" : "Submitted" : "Not Submitted"}
+                                </span>
+                              </button>
+                            </div>
+                          </div>
+                        </div>
+                        {listing.status === "active" && (
+                          <StarIcon size={18}
+                          className={`text-yellow-500 cursor-pointer ${
+                            listing.featured && "fill-yellow-500"
+                          }`}/>
+                        )}
+                      </div>
+                    </div>
+                    <p className='text-sm text-gray-600'><span>@{listing.username}</span></p>
+                  </div>
                 </div>
               </div>
             </div>
