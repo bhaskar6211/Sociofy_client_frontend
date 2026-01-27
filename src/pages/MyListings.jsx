@@ -1,4 +1,4 @@
-import { ArrowDownCircleIcon, CheckCircle, CoinsIcon, DollarSign, Eye, LockIcon, Plus, StarIcon, TrendingUp, WalletIcon } from 'lucide-react';
+import { ArrowDownCircleIcon, BanIcon, CheckCircle, Clock, CoinsIcon, DollarSign, Edit, Eye, EyeIcon, EyeOffIcon, LockIcon, Plus, StarIcon, TrashIcon, TrendingUp, Users, WalletIcon, XCircle } from 'lucide-react';
 import React from 'react'
 import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom';
@@ -13,6 +13,41 @@ const MyListings = () => {
   const totalValues = userListings.reduce((sum,listing) => sum + (listing.price || 0), 0);
   const activeListings = userListings.filter((listing) => listing.status === 'active').length;
   const soldListings = userListings.filter((listing) => listing.status === 'sold').length;
+
+  const formatNumber = (num)=>{
+    if(num >= 1000000) return (num / 1000000).toFixed(1) + "M"
+    if(num >= 1000) return (num / 1000).toFixed(1) + "K"
+    return num?.toString() || "0"
+  }
+
+  const getStatusIcon = (status)=>{
+    switch (status) {
+      case "active":
+        return <CheckCircle className='size-3.5'/>
+      case "ban":
+        return <BanIcon className='size-3.5'/>
+      case "sold":
+        return <DollarSign className='size-3.5'/>
+      case "inactive":
+        return <XCircle className='size-3.5'/>
+      default:
+        return <Clock className='size-3.5'/>
+    }
+  }
+  const getStatusColor = (status)=>{
+    switch (status) {
+      case "active":
+        return "text-green-800"
+      case "ban":
+        return "text-red-800"
+      case "sold":
+        return "text-indigo-800"
+      case "inactive":
+        return "text-gray-800"
+      default:
+        return "text-gray-800"
+    }
+  }
 
   return (
     <div className='px-6 md:px-16 lg:px-24 xl:px-32 pt-8'>
@@ -120,6 +155,44 @@ const MyListings = () => {
                     <p className='text-sm text-gray-600'><span>@{listing.username}</span></p>
                   </div>
                 </div>
+
+                <div className='space-y-4'>
+                  <div className='grid grid-cols-2 gap-2 text-sm'>
+                    <div className='flex items-center space-x-2'>
+                      <Users className='size-4 text-gray-400'/>
+                      <span>{formatNumber(listing.followers_count)} followers</span>
+                    </div>
+                    <span className={`flex items-center justify-end gap-1 ${getStatusColor(listing.status)}`}>
+                      {getStatusIcon(listing.status)}{" "}<span>{listing.status}</span>
+                    </span>
+                    <div className='flex items-center space-x-2'>
+                      <TrendingUp className='size-4 text-gray-400'/>
+                      <span>{listing.engagement_rate}% engagement</span>
+                    </div>
+                  </div>
+
+                  <div className='flex items-center justify-between pt-3 border-t border-gray-200'>
+                    <span className='text-2xl font-bold text-gray-800'>
+                      {currency}
+                      {listing.price.toLocaleString()}
+                    </span>
+                    <div className='flex items-center space-x-2'>
+                      {listing.status !== "sold" && (
+                        <button className='p-2 border border-gray-300 rounded-lg hover:bg-gray-50 hover:text-red-500' >
+                          <TrashIcon className="size-4" />
+                        </button>
+                      )}
+                      <button className='p-2 border border-gray-300 rounded-lg hover:bg-gray-50 hover:text-indigo-600'>
+                        <Edit className="size-4"/>
+                      </button>
+                      <button className='p-2 border border-gray-300 rounded-lg hover:bg-gary-50 hover:text-purple-600'>
+                        {listing.status === "active" && (<EyeOffIcon className="size-4"/>)}
+                        {listing.status !== "active" && (<EyeIcon className="size-4"/>)}
+                      </button>
+                    </div>
+                  </div>
+                </div>
+
               </div>
             </div>
           ))}
