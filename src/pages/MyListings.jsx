@@ -1,5 +1,5 @@
 import { ArrowDownCircleIcon, BanIcon, CheckCircle, Clock, CoinsIcon, DollarSign, Edit, Eye, EyeIcon, EyeOffIcon, LockIcon, Plus, StarIcon, TrashIcon, TrendingUp, Users, WalletIcon, XCircle } from 'lucide-react';
-import React from 'react'
+import React, { useState } from 'react'
 import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom';
 import StatCard from '../components/StatCard';
@@ -9,6 +9,9 @@ const MyListings = () => {
   const {userListings, balance }= useSelector((state)=>state.listing)
   const currency = import.meta.env.VITE_CURRENCY || '$';
   const navigate = useNavigate(); 
+
+  const [showCredentialSubmission, setShowCredentialSubmission] = useState(null);
+  const [showWithdrawal, setShowWithdrawal] = useState(null);
 
   const totalValues = userListings.reduce((sum,listing) => sum + (listing.price || 0), 0);
   const activeListings = userListings.filter((listing) => listing.status === 'active').length;
@@ -47,6 +50,16 @@ const MyListings = () => {
       default:
         return "text-gray-800"
     }
+  }
+
+  const toggleStatus = async (listingId) => {
+    
+  }
+  const deleteListing = async (listingId) => {
+    
+  }
+  const markAsFeatured = async (listingId) => {
+    
   }
 
   return (
@@ -145,7 +158,9 @@ const MyListings = () => {
                           </div>
                         </div>
                         {listing.status === "active" && (
-                          <StarIcon size={18}
+                          <StarIcon 
+                          onClick={()=>markAsFeatured(listing.id)}
+                          size={18}
                           className={`text-yellow-500 cursor-pointer ${
                             listing.featured && "fill-yellow-500"
                           }`}/>
@@ -178,14 +193,14 @@ const MyListings = () => {
                     </span>
                     <div className='flex items-center space-x-2'>
                       {listing.status !== "sold" && (
-                        <button className='p-2 border border-gray-300 rounded-lg hover:bg-gray-50 hover:text-red-500' >
+                        <button onClick={()=>deleteListing(listing.id)} className='p-2 border border-gray-300 rounded-lg hover:bg-gray-50 hover:text-red-500' >
                           <TrashIcon className="size-4" />
                         </button>
                       )}
-                      <button className='p-2 border border-gray-300 rounded-lg hover:bg-gray-50 hover:text-indigo-600'>
+                      <button onClick={()=>navigate(`/edit-listing/${listing.id}`)} className='p-2 border border-gray-300 rounded-lg hover:bg-gray-50 hover:text-indigo-600'>
                         <Edit className="size-4"/>
                       </button>
-                      <button className='p-2 border border-gray-300 rounded-lg hover:bg-gary-50 hover:text-purple-600'>
+                      <button onClick={()=>toggleStatus(listing.id)} className='p-2 border border-gray-300 rounded-lg hover:bg-gary-50 hover:text-purple-600'>
                         {listing.status === "active" && (<EyeOffIcon className="size-4"/>)}
                         {listing.status !== "active" && (<EyeIcon className="size-4"/>)}
                       </button>
@@ -198,6 +213,12 @@ const MyListings = () => {
           ))}
         </div>
       )}
+      {/* Footer */}
+      <div className='bg-white border-t border-gray-200 p-4 text-center mt-28'>
+          <p className='text-sm text-gray-500'>
+            © 2025 <span className='text-indigo-600'>Sociofy</span>. All rights reserved.
+          </p>
+      </div>
     </div>
   )
 }
